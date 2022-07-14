@@ -17,6 +17,8 @@ where BottomSheetPositionEnum.RawValue == CGFloat,
     
     @Binding fileprivate var bottomSheetPosition: BottomSheetPositionEnum
     
+    fileprivate var trueHeight: Binding<Double>?
+    
     @State fileprivate var translation: CGFloat = .zero
     @State fileprivate var isScrollEnabled: Bool = false
     @State fileprivate var dragState: DragGesture.DragState = .none
@@ -213,7 +215,19 @@ where BottomSheetPositionEnum.RawValue == CGFloat,
                             }
                     )
             )
-            .frame(width: geometry.size.width, height: self.frameHeightValue(geometry: geometry), alignment: .top)
+            .frame(
+                width: geometry.size.width, 
+                height: {
+                    let value = self.frameHeightValue(geometry: geometry)
+                    
+                    if let binding: Binding<Double> = trueHeight {
+                        binding.wrappedValue = value
+                    }
+                    
+                    return value
+                }(), 
+                alignment: .top
+            )
             .offset(y: self.offsetYValue(geometry: geometry))
             .transition(.move(edge: .bottom))
         }
@@ -406,10 +420,12 @@ where BottomSheetPositionEnum.RawValue == CGFloat,
     
     // Initializer
     init(bottomSheetPosition: Binding<BottomSheetPositionEnum>,
+         trueHeight: Binding<Double>? = nil,
          options: [BottomSheet.Options],
          @ViewBuilder headerContent: () -> HContent?,
          @ViewBuilder mainContent: () -> MContent) {
         self._bottomSheetPosition = bottomSheetPosition
+        self.trueHeight = trueHeight
         self.options = options
         self.headerContent = headerContent()
         self.mainContent = mainContent()
