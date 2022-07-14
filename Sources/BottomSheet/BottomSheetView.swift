@@ -435,17 +435,20 @@ where BottomSheetPositionEnum.RawValue == CGFloat,
 internal extension BottomSheetView
 where HContent == ModifiedContent<ModifiedContent<Text, _EnvironmentKeyWritingModifier<Int?>>, _PaddingLayout> {
     init(bottomSheetPosition: Binding<BottomSheetPositionEnum>,
+         trueHeight: Binding<Double>? = nil,
          options: [BottomSheet.Options],
          title: String?,
          @ViewBuilder content: () -> MContent) {
         if title == nil {
             self.init(bottomSheetPosition: bottomSheetPosition,
+                      trueHeight: trueHeight,
                       options: options,
                       headerContent: { return nil },
                       mainContent: content)
         } else {
             let hContent = Text(title!).font(.title).bold().lineLimit(1).padding(.bottom) as? HContent
             self.init(bottomSheetPosition: bottomSheetPosition,
+                      trueHeight: trueHeight,
                       options: options,
                       headerContent: { hContent },
                       mainContent: content)

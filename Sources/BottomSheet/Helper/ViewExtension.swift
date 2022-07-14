@@ -23,6 +23,7 @@ public extension View {
     func bottomSheet<HContent: View,
                      MContent: View,
                      BottomSheetPositionEnum: RawRepresentable>(bottomSheetPosition: Binding<BottomSheetPositionEnum>,
+                                                                trueHeight: Binding<Double>? = nil,
                                                                 options: [BottomSheet.Options] =  [],
                                                                 @ViewBuilder headerContent: () -> HContent? = { return nil },
                                                                 @ViewBuilder mainContent: () -> MContent) -> some View
@@ -32,6 +33,7 @@ public extension View {
               ZStack {
                   self
                   BottomSheetView(bottomSheetPosition: bottomSheetPosition,
+                                  trueHeight: trueHeight,
                                   options: options,
                                   headerContent: headerContent,
                                   mainContent: mainContent)
